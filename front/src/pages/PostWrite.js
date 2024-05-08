@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axios";
+import { useNavigate } from "react-router-dom";
 const continents = [
     { key: 1, value: "Seoul" },
     { key: 2, value: "Busan" },
@@ -17,6 +18,9 @@ const PostWrite = () => {
         continents: 1,
         images: [],
     });
+
+    const navigate = useNavigate();
+
     function handleChange(event) {
         // event.target.value;
         // event.target.name;
@@ -34,6 +38,7 @@ const PostWrite = () => {
         }
         try {
             await axiosInstance.post("/products", body);
+            navigate("/");
             alert("post save successful");
         } catch (error) {
             console.error(error);
