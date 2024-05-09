@@ -10,7 +10,7 @@ const MainPage = () => {
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(false);
     const [filters, setFilters] = useState({
-        continents: [], // checkbox - multiple
+        continents: [1, 2], // checkbox - multiple
         price: [], // radio button - single
     });
 
@@ -55,7 +55,22 @@ const MainPage = () => {
     }
 
     function handleFilters(newFilters) {
-        setFilters(newFilters);
+        const filteredData = { ...filters };
+        filteredData["continents"] = newFilters;
+        showFilterResult(filteredData);
+        setFilters(filteredData);
+    }
+
+    function showFilterResult(filters) {
+        console.log("filters", filters);
+        const body = {
+            skip: 0,
+            limit,
+            loadMore: false,
+            filters,
+        };
+        fetchProducts(body);
+        setSkip(0);
     }
 
     return (
@@ -98,7 +113,7 @@ const MainPage = () => {
                     <div>
                         <CheckBox
                             continents={continents}
-                            checkedContinents-={filters.continents}
+                            checkedContinents={filters.continents}
                             onFilters={(filters) => {
                                 handleFilters(filters);
                             }}

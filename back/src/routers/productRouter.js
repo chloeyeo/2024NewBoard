@@ -17,14 +17,24 @@ productRouter.get("/", async (req, res) => {
     const limit = req.query.limit ? Number(req.query.limit) : 20;
     const skip = req.query.skip ? Number(req.query.skip) : 0; // skip = skip + limit
     const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-    const order = req.query.order ? req.query.osrder : "desc";
+    const order = req.query.order ? req.query.order : "desc";
+
+    let findArgs = {}; //continents:[]
+
+    for (let key in req.query.filters) {
+        if (req.query.filters[key].length > 0) {
+            findArgs[key] = req.query.filters[key]; //key가 continent
+        }
+    }
+
+    console.log("findArgs", findArgs);
 
     try {
-        const products = await Product.find({})
+        const products = await Product.find(findArgs)
             .sort([[sortBy, order]])
             .skip(skip)
             .limit(limit);
-        const productsTotal = await Product.countDocuments();
+        const productsTotal = await Product.countDocuments(findArgs);
         const hasMore = skip + limit < productsTotal ? true : false;
         res.status(200).send({ products, hasMore });
     } catch (error) {
