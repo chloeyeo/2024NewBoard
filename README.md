@@ -8,3 +8,4 @@
 -   Write posts and create a page
 -   Use navigator to move page to list page after finish writing post
 -   Query String: frontend sends it as req.params which backend receives it as req.query
+-   Checkbox, radio button, search functionality
