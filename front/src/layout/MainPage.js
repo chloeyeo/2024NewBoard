@@ -3,6 +3,7 @@ import axiosInstance from "../utils/axios";
 import CardItem from "../components/CardItem";
 import { continents, prices } from "../utils/filterData";
 import CheckBox from "../components/CheckBox";
+import SearchInput from "../components/SearchInput";
 
 const MainPage = () => {
     const [products, setProducts] = useState([]);
@@ -13,6 +14,7 @@ const MainPage = () => {
         continents: [1, 2], // checkbox - multiple
         price: [], // radio button - single
     });
+    const [searchForm, setSearchForm] = useState("");
 
     const fetchProducts = async ({
         skip,
@@ -73,12 +75,16 @@ const MainPage = () => {
         setSkip(0);
     }
 
+    function handleSearch(event) {
+        setSearchForm(event.target.value);
+    }
+
     return (
         <section>
             <h2 className="py-4">List of Posts</h2>
 
             {/* filter */}
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-4">
                 <div className="w-full px-2">
                     <h3 className="mb-2">Choose a Region:</h3>
                     {/* <div className="grid grid-cols-3 gap-4 sm:grid-cols-5 mb-3">
@@ -124,7 +130,9 @@ const MainPage = () => {
             </div>
 
             {/* search */}
-            <div className="flex justify-end mb-3">search</div>
+            <div className="flex justify-end mb-3">
+                <SearchInput searchForm={searchForm} onSearch={handleSearch} />
+            </div>
 
             {/* products */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-3">
