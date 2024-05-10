@@ -3,6 +3,7 @@ import axiosInstance from "../utils/axios";
 import CardItem from "../components/CardItem";
 import { continents, prices } from "../utils/filterData";
 import CheckBox from "../components/CheckBox";
+import RadioBox from "../components/RadioBox";
 import SearchInput from "../components/SearchInput";
 
 const MainPage = () => {
@@ -11,7 +12,7 @@ const MainPage = () => {
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(false);
     const [filters, setFilters] = useState({
-        continents: [1, 2], // checkbox - multiple
+        continents: [], // checkbox - multiple
         price: [], // radio button - single
     });
     const [searchForm, setSearchForm] = useState("");
@@ -21,11 +22,13 @@ const MainPage = () => {
         limit,
         loadMore = false,
         filters = {},
+        searchForm = "",
     }) => {
         const params = {
             skip,
             limit,
             filters,
+            searchForm,
         };
         try {
             const res = await axiosInstance.get("/products", { params }); // query string /products?skip=0&limit=4 for instance
@@ -51,16 +54,37 @@ const MainPage = () => {
             limit,
             loadMore: true,
             filters,
+            searchForm,
         };
         fetchProducts(body);
         setSkip(Number(skip) + Number(limit));
     }
 
-    function handleFilters(newFilters) {
+    function handleFilters(newFilters, category) {
         const filteredData = { ...filters };
-        filteredData["continents"] = newFilters;
+        // filteredData["continents"] = newFilters;
+        filteredData[category] = newFilters;
+
+        if (category === "price") {
+            const priceValues = handlePrice(newFilters); // newFilters=3 for instance
+            filteredData[category] = priceValues; // priceValues=array:[0,100] for instance
+        }
+
         showFilterResult(filteredData);
         setFilters(filteredData);
+    }
+
+    function handlePrice(value) {
+        // returns back array[100,250]  for instance
+        let array = [];
+        for (let key in prices) {
+            // key = _id, name, array
+            // key is NOT an index but a KEY since prices is an OBJECT {}
+            if (prices[key]._id === parseInt(value, 10)) {
+                array = prices[key].array;
+            }
+        }
+        return array;
     }
 
     function showFilterResult(filters) {
@@ -70,12 +94,22 @@ const MainPage = () => {
             limit,
             loadMore: false,
             filters,
+            searchForm,
         };
         fetchProducts(body);
         setSkip(0);
     }
 
     function handleSearch(event) {
+        setSearchForm(event.target.value);
+        const body = {
+            skip: 0,
+            limit,
+            filters,
+            searchForm: event.target.value,
+        };
+        fetchProducts(body);
+        setSkip(0);
         setSearchForm(event.target.value);
     }
 
@@ -121,7 +155,16 @@ const MainPage = () => {
                             continents={continents}
                             checkedContinents={filters.continents}
                             onFilters={(filters) => {
-                                handleFilters(filters);
+                                handleFilters(filters, "continents");
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <RadioBox
+                            prices={prices}
+                            checkedPrice={filters.price}
+                            onFilters={(filters) => {
+                                handleFilters(filters, "price");
                             }}
                         />
                     </div>

@@ -28,32 +28,32 @@ const continents = [
 const prices = [
     {
         _id: 0,
-        name: "모두",
+        name: "All",
         array: [],
     },
     {
         _id: 1,
-        name: "0 ~ 199원",
+        name: "0 ~ 199 KRW",
         array: [0, 199],
     },
     {
         _id: 2,
-        name: "200 ~ 249원",
+        name: "200 ~ 249 KRW",
         array: [200, 249],
     },
     {
         _id: 3,
-        name: "250 ~ 279원",
+        name: "250 ~ 279 KRW",
         array: [250, 279],
     },
     {
         _id: 4,
-        name: "280 ~ 299원",
+        name: "280 ~ 299 KRW",
         array: [280, 299],
     },
     {
         _id: 5,
-        name: "300원 이상",
+        name: "300 KRW and above",
         array: [300, 1500000],
     },
 ];
