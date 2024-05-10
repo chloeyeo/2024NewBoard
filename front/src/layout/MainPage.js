@@ -101,7 +101,6 @@ const MainPage = () => {
     }
 
     function handleSearch(event) {
-        setSearchForm(event.target.value);
         const body = {
             skip: 0,
             limit,
