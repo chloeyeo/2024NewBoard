@@ -33,6 +33,7 @@ const CheckBox = ({ continents, checkedContinents, onFilters }) => {
                                         ? false
                                         : true
                                 }
+                                // name must be DIFFERENT for each checkbox
                             />
                             <label
                                 htmlFor={`checkbox-${continent._id}`}
