@@ -27,6 +27,8 @@ const FileUpload = ({ images, onImageChange }) => {
     }
 
     function handleDelete(image) {
+        // only delete image filenames from frontend product.images array
+        // not deleting in backend
         const currentIndex = images.indexOf(image);
         let newImages = [...images];
         newImages.splice(currentIndex, 1);
