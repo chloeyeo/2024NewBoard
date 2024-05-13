@@ -4,13 +4,13 @@ const Product = require("../models/Product");
 const Image = require("../models/Image");
 const upload = require("../middleware/imageUpload");
 
-productRouter.post("/image", upload.single("image"), async (req, res) => {
+productRouter.post("/image", upload.single("image"), (req, res) => {
     try {
-        const image = await new Image({
+        const image = new Image({
             originalFilename: req.file.originalname,
             key: req.file.filename,
-        }).save();
-        res.status(200).send({ uploadedFileName: req.file.filename });
+        });
+        res.status(200).send(req.file.filename);
     } catch (error) {
         console.error(error);
     }
