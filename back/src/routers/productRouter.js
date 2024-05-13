@@ -10,7 +10,7 @@ productRouter.post("/image", upload.single("image"), async (req, res) => {
             originalFilename: req.file.originalname,
             key: req.file.filename,
         }).save();
-        res.status(200).send({ image });
+        res.status(200).send({ uploadedFileName: req.file.filename });
     } catch (error) {
         console.error(error);
     }
