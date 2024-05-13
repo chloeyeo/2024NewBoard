@@ -1,6 +1,20 @@
 const express = require("express");
 const productRouter = express.Router();
 const Product = require("../models/Product");
+const Image = require("../models/Image");
+const upload = require("../middleware/imageUpload");
+
+productRouter.post("/image", upload.single("image"), async (req, res) => {
+    try {
+        const image = await new Image({
+            originalFilename: req.file.originalname,
+            key: req.file.filename,
+        });
+        res.status(200).send({ image });
+    } catch (error) {
+        console.error(error);
+    }
+});
 
 productRouter.post("/", async (req, res) => {
     try {
