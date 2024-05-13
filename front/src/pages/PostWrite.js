@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axios";
 import { useNavigate } from "react-router-dom";
+import FileUpload from "../components/FileUpload";
 const continents = [
     { key: 1, value: "Seoul" },
     { key: 2, value: "Busan" },
@@ -44,6 +45,11 @@ const PostWrite = () => {
             console.error(error);
         }
     }
+
+    function handleImage(newImages) {
+        setProduct((prevState) => ({ ...prevState, images: newImages }));
+    }
+
     return (
         <section>
             <h2 className="mt-4 mb-4">Write a Post</h2>
@@ -113,6 +119,12 @@ const PostWrite = () => {
                         })}
                     </select>
                 </div>
+
+                <FileUpload
+                    images={product.images}
+                    onImageChange={handleImage}
+                />
+
                 <div>
                     <button className="w-full px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700">
                         Finish writing the post
